@@ -167,12 +167,22 @@ h2.sec{font-size:18px;font-weight:900;margin:22px 4px 10px;color:var(--fuji-deep
 .src{font-size:12px;color:var(--warm)}
 .src li{margin:3px 0;word-break:break-all}
 
+
+/* Route map */
+.mapwrap{background:var(--snow);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:10px;overflow:hidden}
+.mapwrap svg{width:100%;height:auto;display:block;border-radius:14px;background:#dbe9f5}
+.maplegend{display:grid;gap:10px;margin-top:12px}
+.mroute{background:var(--snow);border-radius:var(--r-md);box-shadow:var(--shadow);padding:12px 14px;display:grid;grid-template-columns:14px 1fr;gap:10px;align-items:start}
+.mroute .sw{width:14px;height:14px;border-radius:4px;margin-top:4px}
+.mroute b{font-size:15px}
+.mroute p{margin:2px 0 8px;font-size:13.5px;color:#4a5462}
+
 /* Bottom nav */
 .nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom));z-index:20;
   display:flex;gap:4px;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   padding:6px;border-radius:999px;box-shadow:0 8px 24px rgba(29,74,117,.22)}
-.nav button{border:0;background:transparent;border-radius:999px;padding:8px 18px;display:flex;flex-direction:column;align-items:center;
-  font-size:12px;font-weight:700;color:var(--warm);cursor:pointer;min-width:76px;transition:background .2s,color .2s,transform .12s}
+.nav button{border:0;background:transparent;border-radius:999px;padding:8px 12px;display:flex;flex-direction:column;align-items:center;
+  font-size:12px;font-weight:700;color:var(--warm);cursor:pointer;min-width:64px;transition:background .2s,color .2s,transform .12s}
 .nav button:active{transform:scale(.93)}
 .nav button svg{width:22px;height:22px;margin-bottom:1px}
 .nav button.on{background:var(--fuji);color:#fff}
@@ -331,6 +341,16 @@ h2.sec{font-size:18px;font-weight:900;margin:22px 4px 10px;color:var(--fuji-deep
   </div>
 </main>
 
+<!-- 地圖 -->
+<main class="view" id="v-map" aria-label="地圖">
+  <h2 class="sec">開車路線圖</h2>
+  <p class="syncnote">示意圖：點與點之間畫直線，不是實際道路。實際路線請按下方各天的 Google Maps 按鈕。</p>
+  <div class="mapwrap"><svg id="routemap" viewBox="0 0 360 340" role="img" aria-label="北海道自駕路線示意圖"></svg></div>
+  <div class="maplegend" id="maplegend"></div>
+</main>
+
+
+
 </div>
 
 <nav class="nav" aria-label="主要導覽">
@@ -340,6 +360,8 @@ h2.sec{font-size:18px;font-weight:900;margin:22px 4px 10px;color:var(--fuji-deep
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2z"/><path d="M8 7h6M8 11h6"/></svg>指南</button>
   <button id="t-weather" data-view="weather" aria-label="天氣">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M4.9 6.5l14.2 11M19.1 6.5L4.9 17.5"/><path d="M9.5 3.5L12 6l2.5-2.5M9.5 20.5L12 18l2.5 2.5"/></svg>天氣</button>
+  <button id="t-map" data-view="map" aria-label="地圖">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg>地圖</button>
 </nav>
 
 <script>
@@ -642,7 +664,7 @@ function buildChecklist(){
 function applyChecks(){ ITEMS.forEach(function(it){var cb=document.getElementById(it[0]); if(cb) cb.checked=!!checks[it[0]];}); }
 
 /* ---------- tabs ---------- */
-var VIEWS=["itinerary","guide","weather"];
+var VIEWS=["itinerary","guide","weather","map"];
 function showView(name){
   if(VIEWS.indexOf(name)<0) name="itinerary";
   VIEWS.forEach(function(v){
@@ -665,6 +687,63 @@ window.addEventListener("hashchange",function(){ showView(location.hash.slice(1)
   if(diff>0) cd.textContent="倒數 "+diff+" 天";
   else if(today<=end){ cd.textContent="旅行中 ✈︎"; var idx=Math.round((today-start)/86400000); if(idx>=0&&idx<DAYS.length) current=idx; }
   else cd.textContent="旅行回憶";
+})();
+
+
+/* ---------- route map ---------- */
+(function(){
+  var X0=140.4,Y0=44.2,KX=124.1,KY=169.8;
+  function P(lat,lon){return [(lon-X0)*KX,(Y0-lat)*KY];}
+  var coast=[[45.52,141.94],[44.94,142.58],[44.36,143.35],[44.02,144.27],[44.35,145.33],[43.38,145.82],[42.98,144.38],[41.92,143.25],[42.16,142.77],[42.63,141.6],[42.45,141.25],[42.32,140.97],[42.53,140.6],[42.1,140.58],[41.77,140.73],[41.40,140.20],[41.87,140.13],[42.45,139.85],[42.79,140.23],[42.98,140.51],[43.33,140.35],[43.19,140.79],[43.19,141.0],[43.24,141.35],[43.85,141.52],[43.94,141.64],[44.36,141.70],[44.88,141.74],[45.41,141.67]];
+  var PL={
+    cts:{n:"新千歲機場",lat:42.78,lon:141.69},
+    spk:{n:"札幌（Mori Sapporo）",lat:43.07,lon:141.37},
+    otr:{n:"小樽",lat:43.19,lon:141.0},
+    zoo:{n:"旭山動物園",lat:43.77,lon:142.48},
+    tks:{n:"雪橇犬（鷹栖）",lat:43.90,lon:142.34},
+    asa:{n:"旭川",lat:43.77,lon:142.36},
+    bie:{n:"美瑛",lat:43.59,lon:142.47},
+    shg:{n:"白鬚瀑布",lat:43.47,lon:142.64},
+    fur:{n:"富良野",lat:43.34,lon:142.38},
+    mow:{n:"藻岩山",lat:43.02,lon:141.32},
+    tak:{n:"滝野",lat:42.93,lon:141.40},
+    nob:{n:"登別溫泉",lat:42.50,lon:141.15}
+  };
+  var R=[
+    {d:"1/25",t:"新千歲 → 札幌",c:"#2e6ca4",p:["cts","spk"],q:["新千歳空港","Mori Sapporo 札幌市東区北8条東8丁目1-10"],time:"約 1 小時"},
+    {d:"1/26",t:"札幌 ⇄ 小樽",c:"#d0578a",p:["spk","otr"],q:["Mori Sapporo 札幌市東区北8条東8丁目1-10","小樽運河"],time:"單程約 1 小時內"},
+    {d:"1/27",t:"札幌 → 旭山動物園 → 鷹栖 → 旭川",c:"#e07a3f",p:["spk","zoo","tks","asa"],q:["Mori Sapporo 札幌市東区北8条東8丁目1-10","旭山動物園","Moonlight Ladies Dog Sledding","旭川駅"],time:"札幌→旭川約 2 小時"},
+    {d:"1/28",t:"旭川 → 美瑛 → 白鬚瀑布 → 富良野",c:"#3f9a6b",p:["asa","bie","shg","fur"],q:["旭川駅","美瑛 じゅんぺい","白ひげの滝","ニングルテラス"],time:"全程白天短程"},
+    {d:"1/29",t:"富良野 → 札幌（藻岩山）",c:"#7a63b8",p:["fur","spk","mow"],q:["富良野駅","スープカレー奥芝商店 駅前創成寺","もいわ山ロープウェイ 山麓駅"],time:"約 2 小時 10 分"},
+    {d:"1/30",t:"札幌 → 滝野 → 登別",c:"#c0392b",p:["spk","tak","nob"],q:["Mori Sapporo 札幌市東区北8条東8丁目1-10","国営滝野すずらん丘陵公園 東口","登別温泉"],time:"約 1.5–2 小時"},
+    {d:"2/1",t:"登別 → 新千歲（還車）",c:"#8a8178",p:["nob","cts"],q:["登別温泉","新千歳空港"],time:"約 1 小時 15 分"}
+  ];
+  var NS="http://www.w3.org/2000/svg", svg=document.getElementById("routemap");
+  function mk(tag,attrs,text){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;svg.appendChild(e);return e;}
+  mk("polygon",{points:coast.map(function(c){return P(c[0],c[1]).join(",");}).join(" "),fill:"#fbfcfe",stroke:"#b9cde0","stroke-width":"1.5"});
+  R.forEach(function(r,i){
+    var pts=r.p.map(function(k){var p=P(PL[k].lat,PL[k].lon);return [p[0]+(i%3-1)*1.6,p[1]+(i%3-1)*1.6];});
+    mk("polyline",{points:pts.map(function(p){return p.join(",");}).join(" "),fill:"none",stroke:r.c,"stroke-width":"3.5","stroke-linecap":"round","stroke-linejoin":"round",opacity:"0.9"});
+  });
+  var labelPos={cts:[6,12],spk:[-6,-8,"end"],otr:[-6,-6,"end"],zoo:[7,4],tks:[7,-4],asa:[-6,10,"end"],bie:[7,4],shg:[7,4],fur:[-6,12,"end"],mow:[-6,12,"end"],tak:[7,4],nob:[-6,12,"end"]};
+  Object.keys(PL).forEach(function(k){
+    var p=P(PL[k].lat,PL[k].lon), lp=labelPos[k]||[6,4];
+    mk("circle",{cx:p[0],cy:p[1],r:"4.5",fill:"#fff",stroke:"#1d4a75","stroke-width":"2"});
+    var t=mk("text",{x:p[0]+lp[0],y:p[1]+lp[1],"font-size":"10.5","font-weight":"700",fill:"#1d4a75","text-anchor":lp[2]||"start","paint-order":"stroke",stroke:"#fbfcfe","stroke-width":"3"},PL[k].n.replace("（Mori Sapporo）",""));
+  });
+  mk("text",{x:"10",y:"330","font-size":"10",fill:"#8a8178"},"北海道（示意）");
+  var lg=document.getElementById("maplegend");
+  R.forEach(function(r){
+    var row=document.createElement("div"); row.className="mroute";
+    var sw=document.createElement("span"); sw.className="sw"; sw.style.background=r.c; row.appendChild(sw);
+    var box=document.createElement("div");
+    var b=document.createElement("b"); b.textContent=r.d+"　"+r.t; box.appendChild(b);
+    var pp=document.createElement("p"); pp.textContent="車程："+r.time+"（雪天多抓 30–50%）"; box.appendChild(pp);
+    var url="https://www.google.com/maps/dir/?api=1&travelmode=driving&origin="+encodeURIComponent(r.q[0])+"&destination="+encodeURIComponent(r.q[r.q.length-1]);
+    if(r.q.length>2) url+="&waypoints="+encodeURIComponent(r.q.slice(1,-1).join("|"));
+    var a=document.createElement("a"); a.className="btn btn-main"; a.href=url; a.target="_blank"; a.rel="noopener"; a.textContent="🚗 Google Maps 開車路線";
+    box.appendChild(a); row.appendChild(box); lg.appendChild(row);
+  });
 })();
 
 /* ---------- init ---------- */
