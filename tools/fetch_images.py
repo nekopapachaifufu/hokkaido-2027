@@ -24,10 +24,11 @@ for sid, title in spots.items():
     if os.path.exists(f"img/spots/{sid}.jpg") and sid in credits:
         continue
     try:
+        wiki, t = ("en", title[3:]) if title.startswith("en:") else ("ja", title)
         q = urllib.parse.urlencode({"action": "query", "format": "json", "prop": "pageimages",
                                     "piprop": "name|thumbnail", "pithumbsize": "960",
-                                    "redirects": "1", "titles": title})
-        j = json.loads(get("https://ja.wikipedia.org/w/api.php?" + q))
+                                    "redirects": "1", "titles": t})
+        j = json.loads(get(f"https://{wiki}.wikipedia.org/w/api.php?" + q))
         page = next(iter(j["query"]["pages"].values()))
         name = page.get("pageimage")
         thumb = page.get("thumbnail", {}).get("source")
