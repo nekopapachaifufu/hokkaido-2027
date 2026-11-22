@@ -1,4 +1,4 @@
-import json, os, re, time, urllib.parse, urllib.request
+import json, os, re, time, urllib.error, urllib.parse, urllib.request
 from io import BytesIO
 from PIL import Image
 
@@ -6,18 +6,26 @@ UA = {"User-Agent": "hokkaido-2027-trip-app/1.0 (personal travel itinerary)"}
 
 
 def get(url):
-    req = urllib.request.Request(url, headers=UA)
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return r.read()
+    for i in range(6):
+        try:
+            req = urllib.request.Request(url, headers=UA)
+            with urllib.request.urlopen(req, timeout=30) as r:
+                return r.read()
+        except urllib.error.HTTPError as e:
+            if e.code != 429 or i == 5:
+                raise
+            time.sleep(10 * (i + 1))
 
 
 spots = json.load(open("tools/spots.json", encoding="utf-8"))
 os.makedirs("img/spots", exist_ok=True)
-credits = {}
+credits = json.load(open("img/spots/credits.json", encoding="utf-8")) if os.path.exists("img/spots/credits.json") else {}
 for sid, title in spots.items():
+    if os.path.exists(f"img/spots/{sid}.jpg") and sid in credits:
+        continue
     try:
         q = urllib.parse.urlencode({"action": "query", "format": "json", "prop": "pageimages",
-                                    "piprop": "name|thumbnail", "pithumbsize": "900",
+                                    "piprop": "name|thumbnail", "pithumbsize": "960",
                                     "redirects": "1", "titles": title})
         j = json.loads(get("https://ja.wikipedia.org/w/api.php?" + q))
         page = next(iter(j["query"]["pages"].values()))
@@ -38,7 +46,7 @@ for sid, title in spots.items():
         credits[sid] = {"title": title, "file": name, "artist": artist[:80], "license": lic,
                         "url": "https://commons.wikimedia.org/wiki/File:" + urllib.parse.quote(name)}
         print(sid, title, name, lic, im.size)
-        time.sleep(0.5)
+        time.sleep(4)
     except Exception as e:
         print(sid, title, "ERROR", e)
 json.dump(credits, open("img/spots/credits.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
