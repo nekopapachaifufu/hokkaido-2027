@@ -302,7 +302,7 @@ h2.sec{font-size:18px;font-weight:900;margin:22px 4px 10px;color:var(--fuji-deep
     <li><a href="https://kids.rurubu.jp/article/116811/">旭山動物園企鵝散步</a></li>
     <li><a href="https://www.nippon.com/ja/guide-to-japan/gu005001/">登別地獄谷</a>、<a href="https://www.gltjp.com/ja/directory/item/16665/">交通與點燈</a></li>
     <li><a href="https://www.mapple.net/region/a0102030200_g04000000_s-situation=one/spot/">夢元さぎり湯</a>、<a href="https://www.mapple.net/region/a0102030200_g05050000/spot/">登別萬世閣純泡湯</a></li>
-    <li><a href="https://www.sapporo.travel/?p=70567">滝野雪世界</a></li>
+    <li><a href="https://www.gltjp.com/ja/directory/item/16876/">Sapporo Teine Snow Land</a></li>
     <li><a href="https://www.timesclub.jp/benefit/shop/leisure/detail.jsp?shop=S000000610">藻岩山纜車</a></li>
     <li><a href="https://www.sapporo.travel/event/event-list/?cspt%5B%5D=sc04-art">小樽雪燈之路 2027</a></li>
     <li><a href="https://www.gutabi.jp/event/detail/3465">冰雪之門</a></li>
@@ -381,6 +381,7 @@ var TAG={eat:["必吃","t-eat"],buy:["必買","t-buy"],pic:["必拍","t-pic"],wa
 var PARK={
   mori:"飯店停車場每晚 2,000 日圓、車位有限先到先停；停滿就停附近收費停車場。",
   ad:"飯店有免費停車場（露天），早上出門前先把車上的雪清掉、暖車。",
+  teine:"Sapporo Teine 有約 2,800 個免費車位；停 Olympia 區，離 Snow Land 和學校最近。",
   rk:"停車位和費用要先問飯店；中島公園周邊有收費停車場。",
   city:"周邊多為收費停車場（コインパーキング），先用下方按鈕找空位。",
   otaru:"運河、堺町周邊為收費停車場，週末容易滿，盡量上午到。",
@@ -413,9 +414,11 @@ var DAYS=[
   {id:"m2j",t:"14:30",c:"move",n:"登別 → 札幌",q:MORI_Q,d:"原路走道央道回札幌，約 1 小時 40 分，16:30 天黑前回到市區附近。",tags:["warn"]},
   {id:"m2k",t:"18:30",c:"food",n:"晚餐｜根室花まる（札幌站 Stellar Place 6F）",q:"根室花まる JRタワーステラプレイス店",d:"北海道回轉壽司人氣第一。冬季推薦「真だち軍艦」（鱈魚白子軍艦）。不能訂位，門口抽號碼牌，常常排很久，可以先抽號碼再去逛。車留飯店，走路約 13 分鐘或搭計程車。",tags:["eat"],park:"city"}
  ]},
- {d:"1/27",w:"三",title:"滝野玩雪＋湯咖哩＋夜景＋螃蟹大餐",loc:"札幌近郊",stay:{n:"ONSEN RYOKAN 由縁 札幌",s:"第 3／4 晚",q:"ONSEN RYOKAN 由縁 札幌"},note:"上午滝野玩雪，中午奥芝商店，回飯店泡湯休息，傍晚上藻岩山看夕陽轉夜景，晚上冰雪之門吃螃蟹。車留飯店，晚餐搭計程車。",wx:CITY_WEAR,spots:[
-  {id:"m6a",t:"09:30",c:"act",n:"滝野雪世界",q:"国営滝野すずらん丘陵公園 東口",d:"冬季免費入園，9:00–16:00。必做：長輩免費借雪鞋走平緩雪道；年輕人玩 200 公尺甜甜圈雪橇（有拖繩拉回起點，速度快會旋轉，長輩在旁邊看）。",tags:["pic"],park:"city",tip:"甜甜圈雪橇從坡底往上拍，用連拍抓衝下來濺起雪花的瞬間。"},
-  {id:"m6b",t:"13:00",c:"food",n:"午餐｜奥芝商店 駅前創成寺",q:"スープカレー奥芝商店 駅前創成寺",d:"必點：每天早上用甜蝦頭熬的蝦湯頭湯咖哩，辣度、飯量、配料都能選。在札幌站附近 Hokuren 大樓地下 1 樓，車停附近收費停車場。",tags:["eat","warn"],park:"city",tip:"上桌時從正上方拍，蔬菜色彩最漂亮。"},
+ {d:"1/27",w:"三",title:"Teine 單板＋湯咖哩＋夜景＋螃蟹大餐",loc:"札幌 → Sapporo Teine → 市區",stay:{n:"ONSEN RYOKAN 由縁 札幌",s:"第 3／4 晚",q:"ONSEN RYOKAN 由縁 札幌"},note:"上午在 Sapporo Teine：年輕人上中文單板課，長輩玩 Snow Land。中午奥芝商店，回飯店泡湯休息，傍晚上藻岩山看夕陽轉夜景，晚上冰雪之門吃螃蟹。車留飯店，晚餐搭計程車。",wx:CITY_WEAR,spots:[
+  {id:"m6g",t:"08:30",c:"move",n:"由縁札幌 → Sapporo Teine",q:"サッポロテイネ オリンピアゾーン",d:"往手稲方向約 40 分鐘，市區道路和國道 5 號，最後一段是往滑雪場的緩坡，有除雪。停 Olympia 區的免費停車場。",tags:["warn"],park:"teine"},
+  {id:"m6a",t:"09:30–12:00",c:"act",n:"Sapporo Teine・中文單板課（年輕人 3 人）",q:"サッポロテイネ オリンピアゾーン",d:"Teine 官方簽約的中文滑雪學校（KKday 預訂），教練有國際證照、全程中文。在 Olympia 區寬又平緩的初學者坡道上課，學會穿板、煞車、落葉飄。09:00 前到，先租單板、雪靴、安全帽；護臀、護膝、護腕一定要準備，單板初學者最常傷到手腕和尾椎。",tags:["pic","warn"],park:"teine",tip:"請教練幫忙拍滑行影片，從坡下往上拍最有速度感。"},
+  {id:"m6h",t:"09:30–12:00",c:"act",n:"長輩：Teine Snow Land",q:"サッポロテイネ スノーランド",d:"Olympia 區的雪地遊樂區，沒有年齡限制，不滑雪的大人也能玩：約 50 公尺雪橇道（搭電扶梯上坡，不用爬）、雪地泡泡圈、堆雪人、雪鞋體驗。累了就到滑雪中心休息區喝熱飲，看年輕人上課。",tags:["pic"],park:"teine",tip:"從坡底往上拍長輩坐雪橇衝下來的表情。"},
+  {id:"m6b",t:"13:30",c:"food",n:"午餐｜奥芝商店 駅前創成寺",q:"スープカレー奥芝商店 駅前創成寺",d:"必點：每天早上用甜蝦頭熬的蝦湯頭湯咖哩，辣度、飯量、配料都能選。12:30 從 Teine 出發約 50 分鐘。在札幌站附近 Hokuren 大樓地下 1 樓，車停附近收費停車場。",tags:["eat","warn"],park:"city",tip:"上桌時從正上方拍，蔬菜色彩最漂亮。"},
   {id:"m6c",t:"15:00",c:"hotel",n:"回由縁札幌休息",q:MORI_Q,d:"烘乾手套和雪靴，長輩午睡或去泡湯（大浴場 15:00 開）。",park:"mori"},
   {id:"m6d",t:"16:00",c:"sight",n:"藻岩山纜車・札幌夜景",q:"もいわ山ロープウェイ 山麓駅",d:"日落約 16:40，先看夕陽轉夜景，17:45 左右下山。必做：纜車＋迷你登山車上到標高 531m 展望台看夜景。12–3 月 11:00 開始營業，上山末班 21:30，來回大人 2,100 日圓。",tags:["pic"],park:"city",tip:"展望台玻璃會反光，鏡頭貼近玻璃、衣服擋住背後的燈再拍。"},
   {id:"m7d",t:"19:00",c:"food",n:"晚餐｜冰雪之門（螃蟹大餐）",q:"氷雪の門 札幌",d:"必點：三大蟹套餐（帝王蟹、松葉蟹、毛蟹）。訂掘りごたつ包廂，長輩不用跪坐。網路訂位約 12/28 開放。遲到 15 分鐘會被取消。藻岩山下來先把車停回飯店，再搭計程車去。",tags:["eat","warn"],park:"city",tip:"上菜時先拍整桌俯視圖，再拍帝王蟹腳特寫。"}
@@ -674,6 +677,8 @@ var ITEMS=[
  ["c13","札幌かに本家 1/25 晚餐（5 人包廂）","1個月前"],
  ["c12","おたる政寿司 1/28 12:00 午餐","1個月前"],
  ["n3","白色戀人公園手作餅乾 1/28 10:00","1個月前"],
+ ["n5","Sapporo Teine 中文單板課 1/27 09:30（3 人，KKday 官方簽約中文學校）","盡早"],
+ ["n6","旅平險確認有包含滑雪／單板受傷","出發前"],
  ["n2","啤酒博物館 Premium Tour 1/29 11:00","1個月前"],
  ["d6","旭山動物園門票","2週前"]
 ];
@@ -743,14 +748,14 @@ window.addEventListener("hashchange",function(){ showView(location.hash.slice(1)
     shg:{n:"白鬚瀑布",lat:43.47,lon:142.64},
     fur:{n:"富良野",lat:43.34,lon:142.38},
     mow:{n:"藻岩山",lat:43.02,lon:141.32},
-    tak:{n:"滝野",lat:42.93,lon:141.40},
+    tei:{n:"Teine",lat:43.08,lon:141.20},
     nob:{n:"登別溫泉",lat:42.50,lon:141.15},
     ada:{n:"Adagio（美瑛）",lat:43.55,lon:142.43}
   };
   var R=[
     {d:"1/25",t:"新千歲 → 札幌",c:"#2e6ca4",p:["cts","spk"],q:["新千歳空港","ONSEN RYOKAN 由縁 札幌"],time:"約 1 小時"},
     {d:"1/26",t:"札幌 ⇄ 登別（一日遊）",c:"#c0392b",p:["spk","nob"],q:["ONSEN RYOKAN 由縁 札幌","のぼりべつクマ牧場","ONSEN RYOKAN 由縁 札幌"],time:"單程約 1 小時 40 分"},
-    {d:"1/27",t:"札幌 → 滝野 → 市區 → 藻岩山",c:"#1f8a8a",p:["spk","tak","spk","mow"],q:["ONSEN RYOKAN 由縁 札幌","国営滝野すずらん丘陵公園 東口","スープカレー奥芝商店 駅前創成寺","もいわ山ロープウェイ 山麓駅"],time:"市區短程"},
+    {d:"1/27",t:"札幌 → Sapporo Teine → 市區 → 藻岩山",c:"#1f8a8a",p:["spk","tei","spk","mow"],q:["ONSEN RYOKAN 由縁 札幌","サッポロテイネ オリンピアゾーン","スープカレー奥芝商店 駅前創成寺","もいわ山ロープウェイ 山麓駅"],time:"市區短程"},
     {d:"1/28",t:"札幌 → 白色戀人公園 → 小樽 → 札幌",c:"#7a63b8",p:["spk","otr"],q:["ONSEN RYOKAN 由縁 札幌","白い恋人パーク","小樽運河","ONSEN RYOKAN 由縁 札幌"],time:"單程約 40 分"},
     {d:"1/29",t:"JR 特急 札幌 → 旭川",c:"#8a8178",train:1,p:["spk","asa"],q:["札幌駅","旭川駅"],time:"約 1 小時 25 分"},
     {d:"1/29",t:"旭川站 → 美瑛（Adagio）",c:"#d0578a",p:["asa","ada"],q:["旭川駅","Adagio Retreat Tokachidake"],time:"約 40 分"},
@@ -766,7 +771,7 @@ window.addEventListener("hashchange",function(){ showView(location.hash.slice(1)
     var pts=r.p.map(function(k){var p=P(PL[k].lat,PL[k].lon);return [p[0]+(i%3-1)*1.6,p[1]+(i%3-1)*1.6];});
     mk("polyline",{points:pts.map(function(p){return p.join(",");}).join(" "),fill:"none",stroke:r.c,"stroke-width":"3.5","stroke-linecap":"round","stroke-linejoin":"round",opacity:"0.9","stroke-dasharray":r.train?"6 5":"none"});
   });
-  var labelPos={cts:[6,12],spk:[-6,-8,"end"],otr:[-6,-6,"end"],zoo:[7,4],tks:[7,-4],asa:[-6,10,"end"],bie:[7,-2],shg:[7,4],fur:[-6,12,"end"],mow:[-6,12,"end"],tak:[7,4],nob:[-6,12,"end"],ada:[-6,10,"end"]};
+  var labelPos={cts:[6,12],spk:[8,-7],otr:[-6,-6,"end"],zoo:[7,4],tks:[7,-4],asa:[-6,10,"end"],bie:[7,-2],shg:[7,4],fur:[-6,12,"end"],mow:[-6,12,"end"],tei:[-7,4,"end"],nob:[-6,12,"end"],ada:[-6,10,"end"]};
   Object.keys(PL).forEach(function(k){
     var p=P(PL[k].lat,PL[k].lon), lp=labelPos[k]||[6,4];
     mk("circle",{cx:p[0],cy:p[1],r:"4.5",fill:"#fff",stroke:"#1d4a75","stroke-width":"2"});
