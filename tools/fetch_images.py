@@ -1,0 +1,44 @@
+import json, os, re, time, urllib.parse, urllib.request
+from io import BytesIO
+from PIL import Image
+
+UA = {"User-Agent": "hokkaido-2027-trip-app/1.0 (personal travel itinerary)"}
+
+
+def get(url):
+    req = urllib.request.Request(url, headers=UA)
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return r.read()
+
+
+spots = json.load(open("tools/spots.json", encoding="utf-8"))
+os.makedirs("img/spots", exist_ok=True)
+credits = {}
+for sid, title in spots.items():
+    try:
+        q = urllib.parse.urlencode({"action": "query", "format": "json", "prop": "pageimages",
+                                    "piprop": "name|thumbnail", "pithumbsize": "900",
+                                    "redirects": "1", "titles": title})
+        j = json.loads(get("https://ja.wikipedia.org/w/api.php?" + q))
+        page = next(iter(j["query"]["pages"].values()))
+        name = page.get("pageimage")
+        thumb = page.get("thumbnail", {}).get("source")
+        if not (name and thumb):
+            print(sid, title, "NO IMAGE")
+            continue
+        q2 = urllib.parse.urlencode({"action": "query", "format": "json", "prop": "imageinfo",
+                                     "iiprop": "extmetadata", "titles": "File:" + name})
+        m = json.loads(get("https://commons.wikimedia.org/w/api.php?" + q2))
+        info = next(iter(m["query"]["pages"].values())).get("imageinfo", [{}])[0].get("extmetadata", {})
+        artist = re.sub("<[^>]+>", "", info.get("Artist", {}).get("value", "")).strip()
+        lic = info.get("LicenseShortName", {}).get("value", "")
+        im = Image.open(BytesIO(get(thumb))).convert("RGB")
+        im.thumbnail((900, 900))
+        im.save(f"img/spots/{sid}.jpg", "JPEG", quality=76, optimize=True, progressive=True)
+        credits[sid] = {"title": title, "file": name, "artist": artist[:80], "license": lic,
+                        "url": "https://commons.wikimedia.org/wiki/File:" + urllib.parse.quote(name)}
+        print(sid, title, name, lic, im.size)
+        time.sleep(0.5)
+    except Exception as e:
+        print(sid, title, "ERROR", e)
+json.dump(credits, open("img/spots/credits.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
