@@ -13,13 +13,6 @@
   "license": "CC BY 2.0",
   "url": "https://commons.wikimedia.org/wiki/File:SAKURAKO_-_Go_skiing%21_%2830587042713%29.jpg"
  },
- "m6h": {
-  "title": "そり",
-  "file": "Wooden_sled.jpg",
-  "artist": "Rafi B. from Somewhere in Texas :)",
-  "license": "CC BY 2.0",
-  "url": "https://commons.wikimedia.org/wiki/File:Wooden_sled.jpg"
- },
  "m6b": {
   "title": "スープカレー",
   "file": "スープカレー_Soup_Curry.jpg",
@@ -103,12 +96,5 @@
   "artist": "",
   "license": "CC BY-SA 3.0",
   "url": "https://commons.wikimedia.org/wiki/File:KingCrab.jpg"
- },
- "m5a": {
-  "title": "en:Kimono",
-  "file": "Two_young_maiko_in_Seirai-in_Temple_02.jpg",
-  "artist": "Takaaki Kawai",
-  "license": "CC BY-SA 2.0",
-  "url": "https://commons.wikimedia.org/wiki/File:Two_young_maiko_in_Seirai-in_Temple_02.jpg"
  }
 }
